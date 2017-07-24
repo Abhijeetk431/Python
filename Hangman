@@ -1,0 +1,176 @@
+
+import random
+
+def print_hang(wrong_turn):
+    if wrong_turn==0:
+        print("\n")
+        print ("o   o")
+        print ("  -  ")
+        print (" ___ ")
+    if wrong_turn==1:
+        print("\n")
+        print("\t\t''''''''''")
+    if wrong_turn==2:
+        print("\n")
+        print("\t\t''''''''''")
+        print("\t\t||||||||||")
+    if wrong_turn==3:
+        print("\n")
+        print("\t\t''''''''''")
+        print("\t\t||||||||||")
+        print("\t\t----------")
+    if wrong_turn==4:
+        print("\n")
+        print("\t\t''''''''''")
+        print("\t\t||||||||||")
+        print("\t\t----------")
+        print("\t\t__________")
+    if wrong_turn==5:
+        print("\n")
+        print("\t\t''''''''''")
+        print("\t\t||||||||||")
+        print("\t\t----------")
+        print("\t\t__________")        
+        print("\t\t    |     ")
+    if wrong_turn==6:
+        print("\n")
+        print("\t\t''''''''''")
+        print("\t\t||||||||||")
+        print("\t\t----------")
+        print("\t\t__________")
+        print("\t\t    |     ")
+        print("\t\t    |     ")
+    if wrong_turn==7:
+        print("\t\t\n")
+        print("\t\t''''''''''")
+        print("\t\t||||||||||")
+        print("\t\t----------")
+        print("\t\t__________")        
+        print("\t\t    |     ")
+        print("\t\t    |     ")
+        print("\t\t    |o    ")
+    if wrong_turn==8:
+        print("\n")
+        print("\t\t''''''''''")
+        print("\t\t||||||||||")
+        print("\t\t----------")
+        print("\t\t__________")
+        print("\t\t    |     ")
+        print("\t\t    |     ")
+        print("\t\t    |o    ")
+        print("\t\t   /      ")
+    if wrong_turn==9:
+        print("\t\t\n")
+        print("\t\t''''''''''")
+        print("\t\t||||||||||")
+        print("\t\t----------")
+        print("\t\t__________")
+        print("\t\t    |     ")
+        print("\t\t    |     ")
+        print("\t\t    |o    ")
+        print("\t\t   /      ")
+        print("\t\t   |      ")
+    if wrong_turn==10:
+        print("\t\t\n")
+        print("\t\t''''''''''")
+        print("\t\t||||||||||")
+        print("\t\t----------")
+        print("\t\t__________")
+        print("\t\t    |     ")
+        print("\t\t    |     ")
+        print("\t\t    |o    ")
+        print("\t\t   /      ")
+        print("\t\t   |      ")
+        print("\t\t   /\     ")
+        print("\nYou Lose :(:( ")
+
+def inchar(list1):
+    retry = True
+    while retry:
+        try:
+            inch = input("Enter Choice or Exit to Quit: ")
+            if inch == "Exit" or inch == 'exit':
+                return "Exit"
+            inch = inch.upper()
+            if ord(inch)<65 or ord(inch)>90:
+                print("Wrong Choice... Try Again...")
+                retry = True
+            elif ord(inch) not in list1:
+                print("Wrong Choice... Try Again...")
+                retry = True
+            else:
+                return inch
+
+        except TypeError:
+            retry = True
+            print("Wrong Choice... Try Again...")
+    
+def gen_word():
+    with open("hangman.txt","r") as open_file:
+        readed = open_file.read()
+        open_file.close()
+        wordset = [a for a in readed.split('\n')]
+        #print(random.sample(wordset,1)[0])
+        return (random.sample(wordset,1)[0])
+            
+if __name__ == "__main__":
+    flag1=1
+    flag2=1
+    flag3=1
+    yourscore=0
+    while flag1:
+        flag2=1
+        wrongs=0
+        charset = range(65,91)
+        charset = [i for i in charset]
+        word = gen_word().upper()
+        disword = ["_" for each_letter in word]
+        word = [each_letter for each_letter in word]
+        print("\nWelcome to HangMan")
+        while flag2:
+            print("\n\n")
+            print_hang(wrongs)
+            print("\n\n")
+            for i in disword:
+                print(i,end="  ")
+            if "_" not in disword or wrongs==10:
+                break
+            flag3=1
+            print("\n\nPick a letter from options:-")
+            for i in charset:
+                print(chr(i),end=", ")
+            #input char
+            inchr = inchar(charset)
+            if inchr=="Exit":
+                
+                flag1=0
+                flag2=0
+                flag3=0
+                break
+            if inchr in word:
+                charset.remove(ord(inchr))
+                for i in range(0,len(word)):
+                    if word[i] == inchr:
+                        disword[i]=inchr
+            if inchr not in word:
+                #print(charset)
+                charset.remove(ord(inchr))
+                wrongs+=1
+        while flag3:    
+            if wrongs == 10:
+                print("\n\n\n*** OOPS!! You Lose ***")
+                print("\nYour Score: ",yourscore)
+                print("\n\n Correct Word is: ",word)
+            if "_" not in disword:
+                print("\n\n\n*** YAY!! You Win ***")
+                yourscore+=1
+                print("\nYour Score: ",yourscore)
+                print("\n\n Correct Word is: ",word)
+            ag = int(input("1-PlayAgain 2-Exit\nEnter Choice: "))
+            if ag==1:
+                flag3=0
+                flag2=0
+            if ag==2:
+                flag1=0
+                flag2=0
+                flag3=0
